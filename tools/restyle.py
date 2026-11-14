@@ -6,6 +6,8 @@ It reads a poster page and writes a new page where every figure gets:
   - soft volume shading (each flat fill becomes a light-to-dark gradient),
   - bolder, blacker outlines and a sheen along arms and legs,
   - large white cartoon gloves instead of plain hand circles, and glossy shoes.
+The scene around them follows: a lit tent, an audience with eyes, a shaded ring
+wall and floor, and a glossy title sign.
 
 The heads are drawn for this poster's figures (see FIGURES). A poster with other
 figures needs its own entries there.
@@ -293,8 +295,91 @@ def gradient_defs():
         out.append('<radialGradient id="g-%s" cx=".34" cy=".26" r=".95">' % key)
         out.extend('<stop offset="%s" stop-color="%s"/>' % (o, rgb_to_hex(c)) for o, c in stops)
         out.append("</radialGradient>")
+    out.append(SCENE_DEFS)
     out.append("</defs></svg>")
     return "".join(out)
+
+
+# ---------------------------------------------------------------- the scene
+# Gradients for the big background surfaces, in poster coordinates (1080 x 1620).
+SCENE_DEFS = (
+    '<radialGradient id="bg-glow" gradientUnits="userSpaceOnUse" cx="540" cy="560" r="760">'
+    '<stop offset="0" stop-color="#FFD9A0" stop-opacity=".2"/><stop offset=".45" stop-color="#FFD9A0" stop-opacity="0"/>'
+    '<stop offset="1" stop-color="#0B0514" stop-opacity=".62"/></radialGradient>'
+    '<linearGradient id="bg-wall" gradientUnits="userSpaceOnUse" x1="0" y1="690" x2="0" y2="754">'
+    '<stop offset="0" stop-color="#E9543F"/><stop offset=".45" stop-color="#C8322B"/><stop offset="1" stop-color="#84181A"/></linearGradient>'
+    '<linearGradient id="bg-trim" gradientUnits="userSpaceOnUse" x1="0" y1="684" x2="0" y2="696">'
+    '<stop offset="0" stop-color="#FFF0A0"/><stop offset=".5" stop-color="#FFD23F"/><stop offset="1" stop-color="#D08F17"/></linearGradient>'
+    '<radialGradient id="bg-floor" gradientUnits="userSpaceOnUse" cx="540" cy="1140" r="900">'
+    '<stop offset="0" stop-color="#F7DDA4"/><stop offset=".5" stop-color="#E3BE7E"/><stop offset="1" stop-color="#A97C43"/></radialGradient>'
+    '<linearGradient id="bg-board" x1="0" y1="0" x2="0" y2="1">'
+    '<stop offset="0" stop-color="#34204F"/><stop offset="1" stop-color="#0F0719"/></linearGradient>'
+    '<linearGradient id="bg-title" x1="0" y1="0" x2="0" y2="1">'
+    '<stop offset=".15" stop-color="#FF9A62"/><stop offset=".5" stop-color="#FF4B3A"/><stop offset=".9" stop-color="#B8201F"/></linearGradient>'
+)
+
+
+def crowd(m):
+    """An audience member: a shaded, outlined head. The two front rows get eyes that watch the ring."""
+    tag = m.group(0)
+    cx, cy, r = (float(attr(tag, k)) for k in ("cx", "cy", "r"))
+    colour = attr(tag, "fill").upper()
+    out = '<circle cx="%s" cy="%s" r="%s" fill="%s" stroke="%s" stroke-width="3"/>' % (num(cx), num(cy), num(r), gradient_for(colour), OUT)
+    if colour != "#3B2A5A":
+        look = max(-1, min(1, (540 - cx) / 400))
+        for side in (-1, 1):
+            ex, ey = cx + side * r * 0.3, cy - r * 0.3
+            out += '<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="#fff" stroke="%s" stroke-width="2"/>' % (num(ex), num(ey), num(r * 0.22), num(r * 0.32), OUT)
+            out += '<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="%s"/>' % (num(ex + look * r * 0.08), num(ey + r * 0.1), num(r * 0.1), num(r * 0.16), OUT)
+    return out
+
+
+def restyle_scene(svg):
+    def rep(old, new, count=1):
+        nonlocal svg
+        assert svg.count(old) >= 1, old[:60]
+        svg = svg.replace(old, new, count)
+
+    # Tent: warm glow in the middle, dark towards the edges.
+    first_crowd = re.search(r'<circle [^>]*fill="#3B2A5A"[^>]*/>', svg).start()
+    svg = svg[:first_crowd] + '<rect width="1080" height="700" fill="url(#bg-glow)"/>' + svg[first_crowd:]
+    # Audience.
+    svg = re.sub(r'<circle [^>]*fill="#(?:3B2A5A|4A3570|5A4488)"[^>]*/>', crowd, svg)
+    # Ring wall with trim and stars.
+    rep('<rect x="0" y="690" width="1080" height="64" fill="#C8322B"/>', '<rect x="0" y="690" width="1080" height="64" fill="url(#bg-wall)"/>')
+    rep('<rect x="0" y="684" width="1080" height="12" fill="#FFD23F"/>',
+        '<rect x="-6" y="684" width="1092" height="12" fill="url(#bg-trim)" stroke="%s" stroke-width="3.5"/>' % OUT)
+    svg = re.sub(r'(<path d="M\d+ 712l4 9[^"]*" fill=")#FFD23F"', lambda m: m.group(1) + gradient_for("#FFD23F") + '" stroke="%s" stroke-width="2.6" stroke-linejoin="round"' % OUT, svg)
+    # Floor: a pool of light in the middle of the ring.
+    rep('<rect x="0" y="754" width="1080" height="866" fill="#E3BE7E"/>',
+        '<rect x="0" y="754" width="1080" height="866" fill="url(#bg-floor)"/><path d="M0 754H1080" fill="none" stroke="%s" stroke-width="4"/>' % OUT)
+    svg = svg.replace('fill="#8A6A3A" opacity=".35"', 'fill="#5E3F1F" opacity=".4"')
+    # Marquee board, bulbs, title and ribbon.
+    rep('fill="#170C26" stroke="#FFD23F" stroke-width="6"/>', 'fill="url(#bg-board)" stroke="#FFD23F" stroke-width="7"/>')
+    board = re.search(r'<rect x="40" y="22" width="1000" height="232" rx="32"[^>]*/>', svg)
+    svg = svg[: board.start()] + '<rect x="40" y="22" width="1000" height="232" rx="32" fill="none" stroke="%s" stroke-width="15"/>' % OUT + svg[board.start():]
+
+    def bulb(m):
+        tag = m.group(0).replace('stroke-width="2"', 'stroke-width="3"')
+        return tag + '<circle cx="%s" cy="%s" r="2.6" fill="#fff" fill-opacity=".85"/>' % (num(float(attr(tag, "cx")) - 2.6), num(float(attr(tag, "cy")) - 2.8))
+
+    svg = re.sub(r'<circle class="b[12]"[^>]*/>', bulb, svg)
+    rep('fill="#FF4B3A" stroke="#2A1B3D" stroke-width="2" style="stroke:#2A1B3D"',
+        'fill="url(#bg-title)" stroke="%s" stroke-width="7" stroke-linejoin="round" paint-order="stroke" style="stroke:%s"' % (OUT, OUT))
+    rep('fill="#F6EFE0" stroke="#2A1B3D" stroke-width="4" stroke-linejoin="round"/>',
+        'fill="%s" stroke="%s" stroke-width="5" stroke-linejoin="round"/>' % (gradient_for("#F6EFE0"), OUT))
+    # Bunting.
+    svg = re.sub(r'(<path class="flag"[^>]*fill=")(#[0-9A-Fa-f]{6})(" stroke="#2A1B3D" stroke-width=")2\.5',
+                 lambda m: m.group(1) + gradient_for(m.group(2)) + m.group(3) + "3.6", svg)
+    svg = svg.replace('fill="none" stroke="#F6EFE0" stroke-width="3"/>', 'fill="none" stroke="#F6EFE0" stroke-width="4"/>')
+    return svg.replace('stroke="%s"' % OUTLINE_OLD, 'stroke="%s"' % OUT)
+
+
+def restyle_page_chrome(page):
+    """The date stamp gets a sheen and a hard cartoon shadow."""
+    old = "background: #FFD23F; border: 4px dashed #2A1B3D;"
+    assert old in page
+    return page.replace(old, "background: linear-gradient(160deg, #FFF0A0, #FFD23F 45%%, #E8A91E); border: 4px dashed %s; box-shadow: 6px 7px 0 rgba(26, 15, 38, .55);" % OUT)
 
 
 def num(v):
@@ -446,6 +531,9 @@ def main(src, dst):
         return m.group(1) + restyle_figure(m.group(2), m.group(3)) + "</button>"
 
     page, n = re.subn(r'(<button[^>]*data-act="(\w+)"[^>]*>)(.*?)</button>', figure, page, flags=re.S)
+    scene = re.search(r'<svg aria-hidden="true" width="1080".*?</svg>', page, flags=re.S)
+    page = page[: scene.start()] + restyle_scene(scene.group(0)) + page[scene.end():]
+    page = restyle_page_chrome(page)
     page = page.replace('<div id="stage">', '<div id="stage">' + gradient_defs(), 1)
     open(dst, "w", encoding="utf-8").write(page)
     print("Restyled %d figures, %d gradients -> %s" % (n, len(gradients), dst))

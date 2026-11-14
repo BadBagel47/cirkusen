@@ -13,4 +13,4 @@ _(inget)_
 
 ### F-001 Publicera karikatyraffischen som fristående sida ✅ 2026-11-14
 - **Prio:** Hög
-- **Gjort:** Artefaktvyn "Karikatyraffischen" är omgjord till vanlig HTML och JS, med lokala typsnitt, ikoner och delningsbild. På mobil visas texten i en ruta längst ner. Cloudflare-konfigurationen ligger i `wrangler.jsonc`.
+- **Gjort:** Artefaktvyn "Karikatyraffischen" är omgjord till vanlig HTML och JS, med lokala typsnitt, ikoner och delningsbild. På mobil visas texten i en ruta längst ner. Cloudflare-konfigurationen ligger i `wrangler.jsonc`. Publicerad och verifierad av ägaren 2026-11-14.

@@ -9,11 +9,11 @@
 - **Lagar och regler:** inga cookies, ingen lagring och inga tredjepartsanrop. Typsnitten är under OFL med licensfiler. Innehållet är politisk satir om partier och offentliga roller, och källorna står i sidfoten.
 
 ## Läget nu
-- Sidan ligger i `public/` och är testad lokalt i dator- och mobilbredd, inga konsolfel.
+- Sidan är publicerad på https://cirkusen.trythis.one/. Ägaren verifierade den 2026-11-14. Agenten har testat lokalt i dator- och mobilbredd utan konsolfel.
 - Affischen visar läget **14 november 2026**. Den är "färskvara" och blir inaktuell när regeringsfrågan avgörs.
 
 ## Nästa steg
-1. Ägaren kontrollerar att sidan syns på https://cirkusen.trythis.one/. Den egna domänen är tillagd 2026-11-14 och svarar via Cloudflare. Agenten blockeras dock av zonens säkerhetsskydd ("Sorry, you have been blocked") och kan inte se innehållet.
+_Inget just nu._ Affischen behöver uppdateras när regeringsläget ändras.
 
 ## Engångsåtgärder
 - **Klar (2026-11-14):** repot är kopplat till Cloudflare Workers med den egna domänen `cirkusen.trythis.one`. `workers.dev`-adresserna är avstängda.
@@ -30,6 +30,7 @@ _Inga just nu._
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | Ägaren verifierade att sidan fungerar på cirkusen.trythis.one. |
 | 2026-11-14 | Claude | Den egna domänen är tillagd. Agenten blockeras av Cloudflares skydd och kan inte verifiera innehållet. |
 | 2026-11-14 | Claude | Ägaren kopplade Workern. Agentens kontroll av adressen misslyckades (svarade inte). |
 | 2026-11-14 | Claude | Repot skapat: affischen som fristående sida, Cloudflare-konfiguration och dokumentation. |

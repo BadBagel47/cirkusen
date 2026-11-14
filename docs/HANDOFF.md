@@ -36,8 +36,8 @@
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | D-006 steg 4: alla figurer ritade från grunden (kroppar, armar, ben, handskar, skor) i utkastet. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 3: hela scenen (tält, publik, manege, skylt) omritad i den nya stilen i utkastet. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 2: alla ansikten omritade för hand i utkastet, större huvuden, handskar och skor. Inte publicerat. |
 | 2026-11-14 | Claude | D-006: utkast till affisch i mer utvecklad tecknad stil (`drafts/`, `tools/restyle.py`). Inte publicerat. |
 | 2026-11-14 | Claude | Affischarkiv med bläddring och snabbval byggt och provat lokalt (F-002, F-003, F-004). |
-| 2026-11-14 | Claude | Nya önskemål inlagda i backloggen: affischarkiv, bläddring och snabbval (F-002, F-003, F-004). Agentreglerna uppdaterade till v1.7, inget i repot behövde ändras. |

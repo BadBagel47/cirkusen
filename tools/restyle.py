@@ -2,15 +2,16 @@
 """Draft tool: redraws a poster's figures in a classic hand-drawn cartoon style (D-006).
 
 It reads a poster page and writes a new page where every figure gets:
-  - a newly drawn, larger head with big oval eyes, a round nose and a clear expression,
+  - a body drawn from scratch: a pear-shaped torso, rubber-hose arms and legs,
+    big white gloves and big bulbous shoes,
+  - a newly drawn, large head with big oval eyes, a round nose and a clear expression,
   - soft volume shading (each flat fill becomes a light-to-dark gradient),
-  - bolder, blacker outlines and a sheen along arms and legs,
-  - large white cartoon gloves instead of plain hand circles, and glossy shoes.
+  - bolder, blacker outlines and a sheen along arms and legs.
 The scene around them follows: a lit tent, an audience with eyes, a shaded ring
 wall and floor, and a glossy title sign.
 
-The heads are drawn for this poster's figures (see FIGURES). A poster with other
-figures needs its own entries there.
+The figures are drawn for this poster (see FIGURES and the fig_* functions). They reuse
+the original props by line number, so another poster needs its own entries there.
 
 Usage (from the repo root):
   tools/restyle.py public/2026-11-14/index.html drafts/2026-11-14-v2/index.html
@@ -223,39 +224,6 @@ def head_mp():
     )
 
 
-# Per figure: old head lines to drop, where the new head goes (centre and scale),
-# lines to move with it (hats, hair), and plain text patches.
-FIGURES = {
-    "C": dict(drop=(25, 36), head=(head_c, 160, 92, 1.0)),
-    "V": dict(
-        drop=(25, 32), head=(head_v, 160, 98, 0.9),
-        patch=[(
-            '<rect x="108" y="66" width="104" height="28" rx="6" fill="#2A1B3D"/><text x="160" y="86" text-anchor="middle" font-size="14" fill="#FFD23F">MINISTER</text>',
-            '<path d="M124 96V40M196 96V40" fill="none" stroke="#2A1B3D" stroke-width="6"/><rect x="104" y="16" width="112" height="30" rx="6" fill="#2A1B3D"/><text x="160" y="37" text-anchor="middle" font-size="15" fill="#FFD23F">MINISTER</text>',
-        )],
-    ),
-    "S": dict(drop=(22, 27), head=(head_s, 150, 112, 1.08), wrap=[(28, 29, "translate(0 -20) translate(150 76) scale(1.15) translate(-150 -76)")]),
-    "M": dict(drop=(18, 26), head=(head_m, 170, 192, 0.84)),
-    "L": dict(drop=(14, 20), head=(head_l, 221, 49, 0.56)),
-    "KD": dict(drop=(13, 15), head=(head_kd, 190, 116, 0.94), wrap=[(21, 24, "translate(0 -19) translate(190 96) scale(1.15) translate(-190 -96)")]),
-    "SD": dict(drop=(25, 32), head=(head_sd, 160, 120, 0.9), wrap=[(33, 34, "translate(0 -17) translate(160 84) scale(1.12) translate(-160 -84)")]),
-    "T": dict(drop=(17, 22), head=(head_t, 160, 124, 1.0), wrap=[(23, 24, "translate(0 -9) translate(160 90) scale(1.15) translate(-160 -90)")]),
-    "MP": dict(drop=(15, 20), head=(head_mp, 130, 78, 0.84), wrap=[(14, 14, "translate(130 78) scale(1.22) translate(-130 -84)")]),
-}
-
-# Hand circles to turn into gloves, per figure: (cx, cy) -> optional fixed angle in degrees.
-HANDS = {
-    "C": {(86, 202): 150, (246, 190): 30},
-    "V": {(200, 212): 200, (122, 222): -20},
-    "S": {(258, 252): None, (50, 152): None},
-    "M": {(72, 202): None, (268, 202): None},
-    "L": {(258, 28): -35, (264, 69): 25},
-    "KD": {(110, 214): None, (246, 142): None},
-    "SD": {(56, 168): None, (262, 262): None},
-    "T": {(97, 160): None, (264, 248): None},
-    "MP": {(170, 189): None, (214, 152): None},
-}
-
 gradients = {}
 
 
@@ -403,94 +371,249 @@ def shade(markup):
     return re.sub(r"<(?:path|rect|circle|ellipse|polygon)\b[^>]*>", one, markup)
 
 
-def glove(cx, cy, r, angle):
-    """A white cartoon mitt: cuff, thumb, palm, two finger seams and three darts."""
-    g = min(max(r * 1.5, 12), 19)
-    fill = gradient_for("#FFFFFF")
+# ---------------------------------------------------------------- body kit
+DARK = "#2A1B3D"
+
+
+def limb(d, colour, w=18):
+    """A rubber-hose arm or leg: outline, colour and a sheen along it."""
+    return (
+        '<path d="%s" fill="none" stroke="%s" stroke-width="%s"/>' % (d, OUT, num(w + 8))
+        + '<path d="%s" fill="none" stroke="%s" stroke-width="%s"/>' % (d, colour, num(w))
+        + '<path d="%s" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="%s"/>' % (d, num(w * 0.28))
+    )
+
+
+def glove(cx, cy, angle, g=20, kind="fist"):
+    """A big white cartoon glove. 'fist' is a mitt that grips, 'open' has spread fingers."""
     n = lambda v: num(v * g)
-    return "".join([
-        '<g transform="translate(%s %s) rotate(%s)" stroke-width="3.4">' % (num(cx), num(cy), num(angle)),
-        '<rect x="%s" y="%s" width="%s" height="%s" rx="%s" fill="%s"/>' % (n(-1.5), n(-0.8), n(0.72), n(1.6), n(0.34), fill),
-        '<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="%s" transform="rotate(-24 %s %s)"/>' % (n(0.05), n(-0.92), n(0.52), n(0.4), fill, n(0.05), n(-0.92)),
-        '<ellipse cx="%s" cy="0" rx="%s" ry="%s" fill="%s"/>' % (n(0.22), n(1.18), n(1.02), fill),
-        '<path d="M%s %sQ%s %s %s %sM%s %sQ%s %s %s %s" fill="none" stroke-width="2.4"/>'
-        % (n(0.72), n(-0.3), n(1.1), n(-0.4), n(1.36), n(-0.3), n(0.72), n(0.3), n(1.1), n(0.4), n(1.36), n(0.3)),
-        '<path d="M%s %sh%sM%s 0h%sM%s %sh%s" fill="none" stroke-width="2.2"/>'
-        % (n(-0.62), n(-0.36), n(0.44), n(-0.7), n(0.52), n(-0.62), n(0.36), n(0.44)),
-        "</g>",
-    ])
+    white = "#FFFFFF"
+    out = ['<g transform="translate(%s %s) rotate(%s)" stroke-width="3.6">' % (num(cx), num(cy), num(angle))]
+    out.append('<rect x="%s" y="%s" width="%s" height="%s" rx="%s" fill="%s"/>' % (n(-1.6), n(-0.78), n(0.74), n(1.56), n(0.34), white))
+    if kind == "open":
+        for a in (-40, 0, 40):
+            x, y = math.cos(math.radians(a)) * 1.3, math.sin(math.radians(a)) * 1.3
+            out.append('<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="%s" transform="rotate(%s %s %s)"/>' % (n(x), n(y), n(0.7), n(0.4), white, a, n(x), n(y)))
+        out.append('<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="%s" transform="rotate(-68 %s %s)"/>' % (n(-0.1), n(-1.05), n(0.56), n(0.36), white, n(-0.1), n(-1.05)))
+        out.append('<circle r="%s" fill="%s"/>' % (n(1.0), white))
+    else:
+        out.append('<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="%s" transform="rotate(-24 %s %s)"/>' % (n(0.05), n(-0.92), n(0.52), n(0.4), white, n(0.05), n(-0.92)))
+        out.append('<ellipse cx="%s" cy="0" rx="%s" ry="%s" fill="%s"/>' % (n(0.22), n(1.18), n(1.02), white))
+        out.append('<path d="M%s %sQ%s %s %s %sM%s %sQ%s %s %s %s" fill="none" stroke-width="2.4"/>'
+                   % (n(0.72), n(-0.3), n(1.1), n(-0.4), n(1.36), n(-0.3), n(0.72), n(0.3), n(1.1), n(0.4), n(1.36), n(0.3)))
+    out.append('<path d="M%s %sh%sM%s 0h%sM%s %sh%s" fill="none" stroke-width="2.2"/>'
+               % (n(-0.62), n(-0.36), n(0.44), n(-0.7), n(0.52), n(-0.62), n(0.36), n(0.44)))
+    out.append("</g>")
+    return "".join(out)
 
 
-def arm_angle(content, pos, cx, cy, vb_center):
-    """Angle of the arm ending at this hand, from the last path before it."""
-    paths = list(re.finditer(r'\bd="([^"]*)"', content[:pos]))
-    if paths:
-        d = paths[-1].group(1)
-        if not re.search(r"[a-z]", d.replace("Z", "").replace("z", "")):
-            pts = re.findall(r"(-?\d+(?:\.\d+)?)[ ,]+(-?\d+(?:\.\d+)?)", d)
-            if len(pts) >= 2:
-                (x1, y1), (x2, y2) = [(float(a), float(b)) for a, b in pts[-2:]]
-                if math.hypot(x2 - cx, y2 - cy) < 14 and (x1, y1) != (x2, y2):
-                    return math.degrees(math.atan2(y2 - y1, x2 - x1))
-    return math.degrees(math.atan2(cy - vb_center[1], cx - vb_center[0]))
+def shoe(cx, cy, s=22, colour=DARK, flip=False, angle=0):
+    """A big bulbous shoe. (cx, cy) is the sole under the ankle, the toe points right unless flipped."""
+    n = lambda v: num(v * s)
+    d = ("M%s %s C%s %s %s %s %s %s C%s %s %s %s %s %s C%s %s %s %s %s %s L%s %s C%s %s %s %s %s %sZ" % tuple(n(v) for v in (
+        -0.72, -0.5, -0.78, -1.0, 0.05, -1.02, 0.28, -0.6, 0.85, -1.08, 1.95, -0.72, 1.95, -0.02,
+        1.95, 0.34, 1.55, 0.42, 1.0, 0.42, -0.5, 0.42, -0.98, 0.42, -0.95, -0.25, -0.72, -0.5)))
+    return (
+        '<g transform="translate(%s %s) rotate(%s) scale(%s 1)">' % (num(cx), num(cy), num(angle), -1 if flip else 1)
+        + '<path d="%s" fill="%s"/>' % (d, colour)
+        + '<path d="M%s %sQ%s %s %s %s" fill="none" stroke-width="2.4" stroke-opacity=".55"/>' % (n(-0.78), n(0.2), n(0.6), n(0.3), n(1.88), n(0.16))
+        + '<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="#fff" fill-opacity=".42" stroke="none" transform="rotate(-12 %s %s)"/>' % (n(1.22), n(-0.5), n(0.42), n(0.15), n(1.22), n(-0.5))
+        + "</g>"
+    )
 
 
-def restyle_figure(name, content):
-    vb = re.search(r'viewBox="0 0 (\d+) (\d+)"', content)
-    center = (int(vb.group(1)) / 2, int(vb.group(2)) / 2)
-    cfg = FIGURES.get(name, {})
+def head(draw, cx, cy, k):
+    """A head drawn at radius 50, scaled into place with an even outline width."""
+    art = re.sub(r'stroke-width="([\d.]+)"', lambda m: 'stroke-width="%s"' % num(float(m.group(1)) / k), draw())
+    return '<g transform="translate(%s %s) scale(%s)" stroke-width="%s">%s</g>' % (cx, cy, k, num(4.8 / k), art)
 
-    # 0. Swap the old head for a placeholder and move hats and hair along with the new head.
-    for old, new in cfg.get("patch", []):
-        assert old in content, (name, old[:40])
-        content = content.replace(old, new)
-    lines = content.split("\n")
-    for a, b, transform in cfg.get("wrap", []):
-        lines[a] = '<g transform="%s">' % transform + lines[a]
-        lines[b] = lines[b] + "</g>"
-    if "drop" in cfg:
-        a, b = cfg["drop"]
-        lines[a : b + 1] = ["<!--HEAD-->"]
-    content = "\n".join(lines)
 
-    # 1. Sheen along coloured limbs (thick, unfilled, non-outline strokes).
+def body(d, colour):
+    return '<path d="%s" fill="%s"/>' % (d, colour)
+
+
+def moved(transform, markup):
+    return '<g transform="%s">%s</g>' % (transform, markup)
+
+
+# ---------------------------------------------------------------- the figures
+# Each figure is drawn from scratch around its props. o(a, b) splices the original
+# poster's lines a..b for that figure (props, signs and labels that carry the satire).
+
+def fig_s(o):
+    red = "#E8112D"
+    return (
+        o(1, 10)
+        + limb("M130 314 Q124 350 116 382", "#F6EFE0", 24) + limb("M172 314 Q180 350 190 382", "#F6EFE0", 24)
+        + shoe(110, 404, 27, DARK, flip=True) + shoe(196, 404, 27, DARK)
+        + body("M98 184 Q150 160 202 184 Q240 252 226 314 Q150 344 74 314 Q60 252 98 184Z", red)
+        + o(14, 17)
+        + limb("M206 198 Q248 208 256 244", red, 20) + glove(258, 252, 78, 21)
+        + limb("M94 198 Q52 198 50 162", red, 20) + glove(50, 150, -90, 21)
+        + head(head_s, 150, 106, 1.16)
+        + moved("translate(6 -24) translate(150 76) scale(1.08) translate(-150 -76)", o(28, 29))
+    )
+
+
+def fig_c(o):
+    skin, green = "#F6D2B0", "#0E9F45"
+    return (
+        o(1, 9)
+        + limb("M176 252 Q200 294 156 324", skin, 15) + limb("M144 252 Q138 300 168 332", skin, 15)
+        + shoe(152, 336, 15, green, flip=True, angle=-25) + shoe(172, 346, 15, green, angle=20)
+        + o(14)
+        + body("M132 150 Q160 138 188 150 Q200 200 190 238 Q160 248 130 238 Q120 200 132 150Z", green)
+        + o(16, 17)
+        + limb("M134 162 Q104 172 88 198", skin, 13) + glove(84, 204, 125, 15, "open")
+        + limb("M186 162 Q226 162 244 186", skin, 13) + glove(248, 192, 55, 15, "open")
+        + o(22, 24)
+        + head(head_c, 160, 90, 1.06)
+        + o(37, 40)
+    )
+
+
+def fig_v(o):
+    skin = "#EDBE94"
+    return (
+        o(1, 10)
+        + limb("M134 262 Q128 286 122 300", skin, 22) + limb("M186 262 Q192 286 198 300", skin, 22)
+        + shoe(114, 318, 22, DARK, flip=True) + shoe(206, 318, 22, DARK)
+        + o(13)
+        + body("M82 178 Q160 128 238 178 Q262 224 226 254 L94 254 Q58 224 82 178Z", skin)
+        + body("M112 164 Q160 214 208 164 L224 254 L96 254Z", "#AF0B1E")
+        + o(16, 17)
+        + limb("M232 190 Q226 244 130 226", skin, 34) + limb("M88 190 Q98 240 194 218", skin, 34)
+        + glove(202, 214, 190, 20) + glove(120, 226, -10, 20)
+        + o(21, 23)
+        + '<g class="no">' + head(head_v, 160, 94, 1.04) + "</g>"
+    )
+
+
+def fig_m(o):
+    blue, navy = "#52BDEC", "#1F3A6B"
+    return (
+        o(1, 3)
+        + limb("M166 332 Q122 348 102 386", navy, 18) + shoe(100, 400, 20, DARK, flip=True, angle=-38)
+        + limb("M172 330 L172 394", navy, 18) + shoe(168, 410, 21, DARK)
+        + o(8)
+        + body("M138 234 Q170 220 202 234 Q222 290 212 334 Q170 352 128 334 Q118 290 138 234Z", blue)
+        + o(10, 13)
+        + limb("M144 246 Q94 266 72 210", blue, 16) + glove(72, 200, -100, 17)
+        + limb("M196 246 Q246 266 268 210", blue, 16) + glove(268, 200, -80, 17)
+        + head(head_m, 170, 190, 0.9)
+        + o(27, 37)
+    )
+
+
+def fig_l(o):
+    skin, blue = "#E8B48C", "#006AB3"
+    return (
+        o(1, 5)
+        + '<g class="fly">' + o(7)
+        + limb("M118 86 Q84 96 60 76", "#F6EFE0", 12) + limb("M116 72 Q84 70 64 50", "#F6EFE0", 12)
+        + shoe(54, 70, 12, blue, flip=True, angle=35) + shoe(58, 44, 12, blue, flip=True, angle=45)
+        + body("M106 64 Q160 38 206 54 Q220 72 206 90 Q160 106 108 96 Q94 80 106 64Z", blue)
+        + o(11)
+        + limb("M198 80 Q232 84 258 72", skin, 11) + limb("M196 62 Q226 46 252 32", skin, 11)
+        + glove(262, 26, -30, 13, "open") + glove(268, 70, -8, 13, "open")
+        + head(head_l, 222, 48, 0.62)
+        + "</g>"
+    )
+
+
+def fig_kd(o):
+    navy = "#1A2A7A"
+    return (
+        o(1, 3)
+        + limb("M172 288 Q166 334 172 368", navy, 22) + shoe(172, 390, 24, DARK)
+        + limb("M202 288 Q248 296 240 334", navy, 22) + shoe(240, 356, 23, DARK, angle=14)
+        + body("M148 178 Q188 158 228 178 Q248 240 236 292 Q188 312 138 292 Q128 236 148 178Z", navy)
+        + o(9, 11)
+        + '<g class="beat">' + limb("M152 188 Q122 192 112 210", navy, 16)
+        + '<path d="M110 214L86 196" fill="none" stroke="#8A5A2B" stroke-width="6"/><circle cx="82" cy="193" r="11" fill="#C8322B"/>'
+        + glove(110, 214, 120, 17) + "</g>"
+        + head(head_kd, 190, 114, 1.0)
+        + o(16, 18)
+        + limb("M220 190 Q254 182 246 150", navy, 16) + glove(246, 142, -95, 17)
+        + moved("translate(0 -24) translate(190 96) scale(1.18) translate(-190 -96)", o(21, 24))
+        + o(25)
+    )
+
+
+def fig_sd(o):
+    suit = "#2B2B55"
+    return (
+        o(1, 2)
+        + limb("M146 396 L142 444", suit, 18) + limb("M176 396 L180 444", suit, 18)
+        + shoe(136, 460, 20, DARK, flip=True) + shoe(186, 460, 20, DARK)
+        + body("M126 176 Q160 162 194 176 Q216 300 208 400 L112 400 Q104 300 126 176Z", suit)
+        + o(6, 13)
+        + limb("M128 188 Q84 218 58 176", suit, 16) + glove(56, 166, -110, 17)
+        + o(16, 21)
+        + limb("M192 188 Q240 214 260 254", suit, 16)
+        + o(23) + glove(262, 262, 62, 17)
+        + head(head_sd, 160, 116, 1.0)
+        + moved("translate(0 -24) translate(160 84) scale(1.16) translate(-160 -84)", o(33, 34))
+        + o(35, 36)
+    )
+
+
+def fig_t(o):
+    purple = "#5B2A86"
+    return (
+        o(1, 2)
+        + limb("M138 328 L132 390", "#F6EFE0", 24) + limb("M182 328 L190 390", "#F6EFE0", 24)
+        + shoe(124, 412, 26, DARK, flip=True) + shoe(198, 412, 26, DARK)
+        + o(5)
+        + body("M110 192 Q160 168 210 192 Q252 264 228 332 Q160 358 92 332 Q68 264 110 192Z", purple)
+        + o(7, 10)
+        + limb("M112 208 Q80 204 94 168", purple, 19) + glove(96, 158, -80, 19)
+        + o(12, 15)
+        + limb("M208 208 Q238 210 244 228", purple, 19) + glove(246, 236, 75, 18)
+        + head(head_t, 160, 120, 1.08)
+        + moved("translate(0 -20) translate(160 90) scale(1.04) translate(-160 -90)", o(23, 24))
+    )
+
+
+def fig_mp(o):
+    green = "#83CF39"
+    return (
+        o(1, 5)
+        + limb("M126 200 Q154 218 138 238", "#F6EFE0", 15) + shoe(130, 256, 20, "#C8322B")
+        + body("M96 126 Q132 106 168 128 Q182 172 168 208 Q130 224 94 208 Q82 166 96 126Z", green)
+        + o(9, 10)
+        + limb("M106 142 Q124 174 164 188", green, 14) + glove(172, 190, 15, 14)
+        + limb("M160 138 Q196 142 210 152", green, 14) + glove(216, 152, 10, 14)
+        + o(13)
+        + moved("translate(128 78) scale(1.2) translate(-130 -84)", o(14))
+        + head(head_mp, 128, 78, 0.82)
+    )
+
+
+FIGURES = {"S": fig_s, "C": fig_c, "V": fig_v, "M": fig_m, "L": fig_l, "KD": fig_kd, "SD": fig_sd, "T": fig_t, "MP": fig_mp}
+
+# Plain text patches on the original lines before they are reused.
+PATCHES = {
+    "MP": [('<g transform="rotate(-4 213 36)">', '<g transform="translate(22 -8) rotate(-4 213 36)">'), ('<path d="M214 152V62"', '<path d="M216 152V52"')],
+    "V": [(
+        '<rect x="108" y="66" width="104" height="28" rx="6" fill="#2A1B3D"/><text x="160" y="86" text-anchor="middle" font-size="14" fill="#FFD23F">MINISTER</text>',
+        '<path d="M124 96V10M196 96V10" fill="none" stroke="#2A1B3D" stroke-width="6"/><rect x="104" y="-16" width="112" height="30" rx="6" fill="#2A1B3D"/><text x="160" y="5" text-anchor="middle" font-size="15" fill="#FFD23F">MINISTER</text>',
+    )],
+}
+
+
+def restyle_lines(content):
+    """Shared treatment of the original artwork: limb sheen, bolder outlines."""
+
     def sheen(m):
         tag = m.group(0)
         w, stroke = attr(tag, "stroke-width"), attr(tag, "stroke")
         if attr(tag, "fill") == "none" and stroke and stroke.upper() != OUTLINE_OLD and w and float(w) >= 12:
-            hl = '<path d="%s" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="%s"/>' % (attr(tag, "d"), num(float(w) * 0.3))
-            return tag + hl
+            return tag + '<path d="%s" fill="none" stroke="#fff" stroke-opacity=".3" stroke-width="%s"/>' % (attr(tag, "d"), num(float(w) * 0.3))
         return tag
 
     content = re.sub(r"<path\b[^>]*/>", sheen, content)
 
-    # 2. Gloves and shoes (matched on the original coordinates).
-    def shapes(m):
-        tag = m.group(0)
-        kind = m.group(1)
-        cx, cy = attr(tag, "cx"), attr(tag, "cy")
-        if cx is None:
-            return tag
-        key = (float(cx), float(cy))
-        fill = (attr(tag, "fill") or "").upper()
-        if kind == "circle" and key in HANDS.get(name, {}):
-            fixed = HANDS[name][key]
-            angle = fixed if fixed is not None else arm_angle(content, m.start(), key[0], key[1], center)
-            return glove(key[0], key[1], float(attr(tag, "r")), angle)
-        if kind == "ellipse" and fill == OUTLINE_OLD and attr(tag, "rx") and 17 <= float(attr(tag, "rx")) <= 26 and float(attr(tag, "ry")) <= 11:
-            rx, ry = float(attr(tag, "rx")), float(attr(tag, "ry"))
-            rot = attr(tag, "transform")
-            rot = ' transform="%s"' % rot if rot else ""
-            return (
-                '<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="%s"%s/>' % (cx, num(key[1] - ry * 0.35), num(rx * 1.3), num(ry * 1.75), OUTLINE_OLD, rot)
-                + '<ellipse cx="%s" cy="%s" rx="%s" ry="%s" fill="#fff" fill-opacity=".38" stroke="none"%s/>'
-                % (num(key[0] - rx * 0.3), num(key[1] - ry * 1.05), num(rx * 0.5), num(ry * 0.38), rot)
-            )
-        return tag
-
-    content = re.sub(r"<(circle|ellipse)\b[^>]*/>", shapes, content)
-
-    # 3. Outlines: bolder and blacker.
     def strokes(m):
         tag = m.group(0)
         w = attr(tag, "stroke-width")
@@ -499,29 +622,29 @@ def restyle_figure(name, content):
             dark = (attr(tag, "stroke") or "").upper() == OUTLINE_OLD
             if v >= 12 and dark:
                 v += 3
-            elif v <= 8 and tag.startswith("<g") and "translate" not in tag:
+            elif v <= 8 and tag.startswith("<g"):
                 v = 4.8
-            elif v <= 8 and "stroke-opacity" not in tag and "translate" not in tag:
+            elif v <= 8 and "stroke-opacity" not in tag:
                 v *= 1.25
             tag = re.sub(r'stroke-width="[^"]*"', 'stroke-width="%s"' % num(v), tag, count=1)
         return tag
 
-    content = re.sub(r"<(?:g|path|rect|circle|ellipse|polygon|text)\b[^>]*>", strokes, content)
+    return re.sub(r"<(?:g|path|rect|circle|ellipse|polygon|text)\b[^>]*>", strokes, content)
 
-    # 4. Volume shading on flat fills.
+
+def restyle_figure(name, content):
+    for old, new in PATCHES.get(name, []):
+        assert old in content, (name, old[:40])
+        content = content.replace(old, new)
+    lines = [restyle_lines(l) for l in content.split("\n")]
+    if name in FIGURES:
+        o = lambda a, b=None: "\n".join(lines[a : (b if b is not None else a) + 1])
+        content = lines[0] + "\n" + FIGURES[name](o) + "\n" + lines[-1]
+    else:
+        content = "\n".join(lines)
     content = shade(content)
     content = content.replace('stroke="%s"' % OUTLINE_OLD, 'stroke="%s"' % OUT)
-    content = content.replace("stroke:%s" % OUTLINE_OLD, "stroke:%s" % OUT)
-
-    # 5. The new head, drawn at radius 50 and scaled into place with an even outline width.
-    if "head" in cfg:
-        draw, cx, cy, k = cfg["head"]
-        art = shade(draw())
-        art = re.sub(r'stroke-width="([\d.]+)"', lambda m: 'stroke-width="%s"' % num(float(m.group(1)) / k), art)
-        head = '<g transform="translate(%s %s) scale(%s)" stroke-width="%s">%s</g>' % (cx, cy, k, num(4.8 / k), art)
-        assert "<!--HEAD-->" in content, name
-        content = content.replace("<!--HEAD-->", head)
-    return content
+    return content.replace("stroke:%s" % OUTLINE_OLD, "stroke:%s" % OUT)
 
 
 def main(src, dst):

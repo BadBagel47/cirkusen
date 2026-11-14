@@ -15,7 +15,7 @@
 - Kodändringen är provad lokalt (dator- och mobilbredd, tangentbord, minskad rörelse, inga konsolfel). **Inte verifierad på den publicerade adressen** eftersom agenten stoppas av Cloudflares skydd, och inte provad på ägarens telefon.
 
 ## Nästa steg
-- **D-006 (ny stil, utkast):** ägaren bedömer testfiguren S från bildgeneratorn i `drafts/2026-11-14-v3-test/`. Det kodritade utkastet ligger kvar i `drafts/2026-11-14-v2/`. Ingenting av det är publicerat.
+- **D-006 (ny stil, utkast):** ägaren bedömer utkastet med genererade figurer i `drafts/2026-11-14-v3/` (byggs med `tools/compose_v3.py`). Ingenting av det är publicerat.
 - Ägaren verifierar arkivet på cirkusen.trythis.one och bestämmer när nästa affisch ska göras (görs tillsammans, se AFFISCHER.md).
 - Affischen behöver uppdateras när regeringsläget ändras.
 
@@ -36,8 +36,8 @@
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | D-006 steg 6: alla figurer genererade och inlagda i utkastet, med skyltar och skuggor som kod. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 5: test med genererad figur (S) inlagd i ett eget utkast. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 4: alla figurer ritade från grunden (kroppar, armar, ben, handskar, skor) i utkastet. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 3: hela scenen (tält, publik, manege, skylt) omritad i den nya stilen i utkastet. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 2: alla ansikten omritade för hand i utkastet, större huvuden, handskar och skor. Inte publicerat. |
-| 2026-11-14 | Claude | D-006: utkast till affisch i mer utvecklad tecknad stil (`drafts/`, `tools/restyle.py`). Inte publicerat. |

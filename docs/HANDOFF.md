@@ -11,9 +11,11 @@
 ## Läget nu
 - Sidan är publicerad på https://cirkusen.trythis.one/. Ägaren verifierade den 2026-11-14. Agenten har testat lokalt i dator- och mobilbredd utan konsolfel.
 - Affischen visar läget **14 november 2026**. Den är "färskvara" och blir inaktuell när regeringsfrågan avgörs.
+- Sidan är nu ett **affischarkiv** (F-002, F-003, F-004): varje affisch har en egen adress med datum, `/` visar den senaste, och det finns Äldre/Nyare-knappar, piltangenter och en snabbvalslista. Så görs en ny affisch: se [docs/AFFISCHER.md](AFFISCHER.md). Tills det finns två affischer är bläddringsknapparna avstängda och listan har bara en rad.
+- Kodändringen är provad lokalt (dator- och mobilbredd, tangentbord, minskad rörelse, inga konsolfel). **Inte verifierad på den publicerade adressen** eftersom agenten stoppas av Cloudflares skydd, och inte provad på ägarens telefon.
 
 ## Nästa steg
-- Vänta på ägarens klartecken för körningen nedan (F-002, F-003, F-004). Ingen kod är ändrad än.
+- Ägaren verifierar arkivet på cirkusen.trythis.one och bestämmer när nästa affisch ska göras (görs tillsammans, se AFFISCHER.md).
 - Affischen behöver uppdateras när regeringsläget ändras.
 
 ## Engångsåtgärder
@@ -27,16 +29,14 @@
 - **2026-11-14:** Bara vyn "Karikatyraffischen" publiceras. Artefaktens andra vyer ("Regeringscirkusen 2026" och "Manegen – interaktiv") är inte med.
 
 ## Föreslagna körningar
-**A** – standardmodell, hög nivå – Flera affischer med bläddring och snabbval
-- F-002 – Gör om sidan till ett arkiv där varje affisch har en egen adress och startsidan visar den senaste. Ger att nya affischer kan läggas till utan att de gamla försvinner.
-- F-003 – Lägg till knappar (och piltangenter) för föregående och nästa affisch. Ger att man kan bläddra genom affischerna i tidsordning.
-- F-004 – Lägg till en meny med alla affischer. Ger att man kan hoppa direkt till en viss affisch.
+**A** – standardmodell, medel nivå – Delningsbild för varje affisch
+- F-005 – Ett skript som ritar delningsbilden från affischen. Ger rätt bild när en ny affisch delas, utan handarbete.
 
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | Affischarkiv med bläddring och snabbval byggt och provat lokalt (F-002, F-003, F-004). |
 | 2026-11-14 | Claude | Nya önskemål inlagda i backloggen: affischarkiv, bläddring och snabbval (F-002, F-003, F-004). Agentreglerna uppdaterade till v1.7, inget i repot behövde ändras. |
 | 2026-11-14 | Claude | Ägaren verifierade att sidan fungerar på cirkusen.trythis.one. |
 | 2026-11-14 | Claude | Den egna domänen är tillagd. Agenten blockeras av Cloudflares skydd och kan inte verifiera innehållet. |
-| 2026-11-14 | Claude | Ägaren kopplade Workern. Agentens kontroll av adressen misslyckades (svarade inte). |
 | 2026-11-14 | Claude | Repot skapat: affischen som fristående sida, Cloudflare-konfiguration och dokumentation. |

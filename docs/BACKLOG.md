@@ -5,27 +5,27 @@
 
 ## Öppna
 
-### F-002 Affischarkiv: flera affischer på sidan
-- **Prio:** Hög
-- **Önskemål (ägaren 2026-11-14):** "Jag vill att man ska kunna skapa nya affischer och bläddra mellan dem."
-- **Förslag:** Varje affisch får en egen adress med datum (t.ex. `/2026-11-14/`) och startsidan visar alltid den senaste. Det som är gemensamt (stil, typsnitt, pratbubblornas funktion) bryts ut, så att en ny affisch blir en ny fil plus en rad i en affischlista. En kort instruktion för hur en ny affisch görs läggs i `docs/`.
-- **Bekräftat (ägaren 2026-11-14):** "Det är du och jag som bygger affischerna." Nya affischer görs alltså av ägaren och agenten tillsammans, inte av besökare i webbläsaren.
-- **Lagar och regler:** ingen lagring i webbläsaren behövs (sidan minns inte vilken affisch besökaren såg senast), så läget är oförändrat.
-
-### F-003 Bläddra mellan affischerna
-- **Prio:** Hög
-- **Önskemål (ägaren 2026-11-14):** se F-002.
-- **Förslag:** Knappar för föregående och nästa affisch, som också går att nå med piltangenterna. Knapparna ska fungera i dator- och mobilbredd och inte skymma affischen eller textrutan på mobil. Bygger på F-002.
-
-### F-004 Snabbval för att hoppa mellan affischerna
-- **Prio:** Hög
-- **Önskemål (ägaren 2026-11-14):** "Även ett snabbval för att hoppa mellan affischen behövs."
-- **Förslag:** En meny som listar alla affischer med datum och rubrik, så att man kan hoppa direkt till en viss affisch utan att bläddra. Bygger på F-002.
+### F-005 Delningsbild som görs automatiskt för varje affisch
+- **Prio:** Medel
+- **Förslag:** Ett skript i `tools/` som ritar en delningsbild (1200×630) från affischen, så att varje ny affisch får rätt bild utan handarbete. Idag byts bilden för hand (se `docs/AFFISCHER.md`, punkt 4).
 
 ## Parkerat
 _(inget)_
 
 ## Klart
+
+### F-002 Affischarkiv: flera affischer på sidan ✅ 2026-11-14
+- **Prio:** Hög
+- **Önskemål (ägaren):** "Jag vill att man ska kunna skapa nya affischer och bläddra mellan dem." Ägaren bekräftade att affischerna byggs av ägaren och agenten tillsammans, inte av besökare.
+- **Gjort:** Varje affisch har en egen adress med datum (första: `/2026-11-14/`) och startsidan visar den senaste. Gemensam stil och kod ligger i `assets/`. `tools/posters.py` skapar en ny affisch som kopia av den senaste och kontrollerar arkivet. Instruktion i `docs/AFFISCHER.md`. Provat lokalt i dator- och mobilbredd med en tillfällig kopia med tre affischer. Inte publicerat och verifierat av ägaren än.
+
+### F-003 Bläddra mellan affischerna ✅ 2026-11-14
+- **Prio:** Hög
+- **Gjort:** Knapparna Äldre och Nyare samt piltangenterna ← och →. Knapparna är minst 44 px stora på mobil och fältet ligger fast överst när man scrollar, utan att skymma affischen eller textrutan. Avstängda i ändlägena. Provat lokalt.
+
+### F-004 Snabbval för att hoppa mellan affischerna ✅ 2026-11-14
+- **Prio:** Hög
+- **Gjort:** Knappen i mitten öppnar en lista med alla affischer (datum och rubrik, nyast först, "Senaste" markerad). Går att styra med tangentbordet och stängs med Esc eller klick utanför. Provat lokalt.
 
 ### F-001 Publicera karikatyraffischen som fristående sida ✅ 2026-11-14
 - **Prio:** Hög

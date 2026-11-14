@@ -1,7 +1,7 @@
 # cirkusen – projektregler
 
 > **Övergripande agentregler:** https://raw.githubusercontent.com/BadBagel47/agent-rules/main/AGENTS.md. Läs dem vid varje sessionsstart, de gäller före projektreglerna nedan.
-> **Handoff:** `docs/HANDOFF.md` · **Backlog:** `docs/BACKLOG.md`
+> **Handoff:** `docs/HANDOFF.md` · **Backlog:** `docs/BACKLOG.md` · **Affischarkivet:** `docs/AFFISCHER.md`
 
 ## Vad projektet är
 En satirisk, interaktiv karikatyraffisch om regeringsbildningen 2026: "Regeringscirkusen". Den publiceras på https://cirkusen.trythis.one/. Originalet är en Claude Design-artefakt med titeln "Regeringscirkusen 2026 – satirisk affisch", vyn "Karikatyraffischen". Den är omgjord till en fristående sida.
@@ -9,10 +9,14 @@ En satirisk, interaktiv karikatyraffisch om regeringsbildningen 2026: "Regerings
 ## Struktur
 ```
 public/                 Det enda som publiceras (se wrangler.jsonc)
-public/index.html       Hela sidan: HTML, CSS och JS i en fil
+public/<datum>/index.html    En affisch per mapp, t.ex. 2026-11-14
+public/index.html       Genererad kopia av den senaste affischen (redigeras inte för hand)
+public/assets/poster.css, poster.js   Gemensam stil och kod: skalning, pratbubblor, bläddring, snabbval
+public/assets/posters.json   Lista över alla affischer, äldst först
 public/assets/fonts/    Bungee, Rye och Inter, lokalt med OFL-licenser
-public/assets/og-image.jpg   Delningsbild 1200×630
+public/assets/og-image.jpg   Delningsbild 1200×630 (första affischen)
 public/favicon.*, apple-touch-icon.png   Ikoner
+tools/posters.py        Skapar nya affischer och kontrollerar arkivet, publiceras inte
 wrangler.jsonc          Cloudflare Workers-konfiguration (static assets)
 AGENTS.md, docs/        Regler och dokumentation, publiceras inte
 ```

@@ -36,8 +36,8 @@
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | D-006 steg 2: alla ansikten omritade för hand i utkastet, större huvuden, handskar och skor. Inte publicerat. |
 | 2026-11-14 | Claude | D-006: utkast till affisch i mer utvecklad tecknad stil (`drafts/`, `tools/restyle.py`). Inte publicerat. |
 | 2026-11-14 | Claude | Affischarkiv med bläddring och snabbval byggt och provat lokalt (F-002, F-003, F-004). |
 | 2026-11-14 | Claude | Nya önskemål inlagda i backloggen: affischarkiv, bläddring och snabbval (F-002, F-003, F-004). Agentreglerna uppdaterade till v1.7, inget i repot behövde ändras. |
 | 2026-11-14 | Claude | Ägaren verifierade att sidan fungerar på cirkusen.trythis.one. |
-| 2026-11-14 | Claude | Den egna domänen är tillagd. Agenten blockeras av Cloudflares skydd och kan inte verifiera innehållet. |

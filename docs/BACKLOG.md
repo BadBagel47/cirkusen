@@ -5,6 +5,13 @@
 
 ## Öppna
 
+### D-006 Mer utvecklad stil på figurerna (utkast)
+- **Prio:** Medel · **Status:** Utkast, väntar på ägarens synpunkter
+- **Önskemål (ägaren, 2026-11-14):** En ny version med mer utvecklad stil, i riktning mot klassisk tecknad film: mjuk skuggning, svarta konturer, vita handskar och blanka skor. Inga skyddade figurer får användas. Ingenting ska publiceras än.
+- **Gjort:** `tools/restyle.py` ritar om en befintlig affisch. Alla figurer får volymskuggning, kraftigare konturer, glans på armar och ben, vita handskar, högre ögon med glans i pupillerna och blanka skor. Utkastet ligger i `drafts/2026-11-14-v2/index.html`. Provat lokalt i dator- och mobilbredd och med minskad rörelse, inga konsolfel.
+- **Förhandsvisa:** kopiera `public/` till en tillfällig mapp, lägg utkastet som `2026-11-14/index.html` där och servera mappen.
+- **Kvar:** Ägaren tycker till. Sedan bestäms om stilen ska ersätta affischen från 14 november, gälla först från nästa affisch, eller utvecklas vidare (t.ex. omritade ansikten och bakgrund i samma stil).
+
 ### F-005 Delningsbild som görs automatiskt för varje affisch
 - **Prio:** Medel
 - **Förslag:** Ett skript i `tools/` som ritar en delningsbild (1200×630) från affischen, så att varje ny affisch får rätt bild utan handarbete. Idag byts bilden för hand (se `docs/AFFISCHER.md`, punkt 4).

@@ -17,6 +17,8 @@ public/assets/fonts/    Bungee, Rye och Inter, lokalt med OFL-licenser
 public/assets/og-image.jpg   Delningsbild 1200×630 (första affischen)
 public/favicon.*, apple-touch-icon.png   Ikoner
 tools/posters.py        Skapar nya affischer och kontrollerar arkivet, publiceras inte
+tools/restyle.py        Utkastverktyg: ritar om en affisch i tecknad stil med skuggning (D-006), publiceras inte
+drafts/                 Utkast som inte är publicerade. Ligger utanför public/ och syns inte på sajten
 wrangler.jsonc          Cloudflare Workers-konfiguration (static assets)
 AGENTS.md, docs/        Regler och dokumentation, publiceras inte
 ```

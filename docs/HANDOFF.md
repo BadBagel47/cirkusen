@@ -15,6 +15,7 @@
 - Kodändringen är provad lokalt (dator- och mobilbredd, tangentbord, minskad rörelse, inga konsolfel). **Inte verifierad på den publicerade adressen** eftersom agenten stoppas av Cloudflares skydd, och inte provad på ägarens telefon.
 
 ## Nästa steg
+- **D-006 (ny stil, utkast):** ägaren tycker till om utkastet i `drafts/2026-11-14-v2/`. Ingenting av det är publicerat.
 - Ägaren verifierar arkivet på cirkusen.trythis.one och bestämmer när nästa affisch ska göras (görs tillsammans, se AFFISCHER.md).
 - Affischen behöver uppdateras när regeringsläget ändras.
 
@@ -35,8 +36,8 @@
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | D-006: utkast till affisch i mer utvecklad tecknad stil (`drafts/`, `tools/restyle.py`). Inte publicerat. |
 | 2026-11-14 | Claude | Affischarkiv med bläddring och snabbval byggt och provat lokalt (F-002, F-003, F-004). |
 | 2026-11-14 | Claude | Nya önskemål inlagda i backloggen: affischarkiv, bläddring och snabbval (F-002, F-003, F-004). Agentreglerna uppdaterade till v1.7, inget i repot behövde ändras. |
 | 2026-11-14 | Claude | Ägaren verifierade att sidan fungerar på cirkusen.trythis.one. |
 | 2026-11-14 | Claude | Den egna domänen är tillagd. Agenten blockeras av Cloudflares skydd och kan inte verifiera innehållet. |
-| 2026-11-14 | Claude | Repot skapat: affischen som fristående sida, Cloudflare-konfiguration och dokumentation. |

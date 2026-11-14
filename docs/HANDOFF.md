@@ -13,11 +13,10 @@
 - Affischen visar läget **14 november 2026**. Den är "färskvara" och blir inaktuell när regeringsfrågan avgörs.
 
 ## Nästa steg
-1. Ägaren kopplar repot till Cloudflare (Workers & Pages → Import a repository) och lägger till den egna domänen `cirkusen.trythis.one`.
-2. Ägaren kontrollerar att sidan syns på adressen.
+1. Ägaren kontrollerar att sidan syns på https://cirkusen.trythis.one/. Agentens kontroll 2026-11-14 misslyckades: adressen svarade inte (DNS saknas, eller domänen var ännu inte aktiv).
 
 ## Engångsåtgärder
-- **Väntar (2026-11-14):** koppla repot till Cloudflare Workers och lägg till den egna domänen.
+- **Klar enligt ägaren (2026-11-14):** repot är kopplat till Cloudflare Workers med den egna domänen. Inte verifierat av agenten.
 
 ## Beslut
 - **2026-11-14:** Cloudflare Workers i stället för GitHub Pages, så att repot kan vara privat och bara `public/` publiceras (ägarens val).
@@ -30,4 +29,5 @@ _Inga just nu._
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | Ägaren kopplade Workern. Agentens kontroll av adressen misslyckades (svarade inte). |
 | 2026-11-14 | Claude | Repot skapat: affischen som fristående sida, Cloudflare-konfiguration och dokumentation. |

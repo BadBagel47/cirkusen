@@ -9,7 +9,7 @@
 - **Prio:** Hög
 - **Önskemål (ägaren 2026-11-14):** "Jag vill att man ska kunna skapa nya affischer och bläddra mellan dem."
 - **Förslag:** Varje affisch får en egen adress med datum (t.ex. `/2026-11-14/`) och startsidan visar alltid den senaste. Det som är gemensamt (stil, typsnitt, pratbubblornas funktion) bryts ut, så att en ny affisch blir en ny fil plus en rad i en affischlista. En kort instruktion för hur en ny affisch görs läggs i `docs/`.
-- **Tolkning att bekräfta:** "skapa" betyder att ägaren ber agenten göra en ny affisch när regeringsläget ändras, inte att besökare bygger egna affischer i webbläsaren.
+- **Bekräftat (ägaren 2026-11-14):** "Det är du och jag som bygger affischerna." Nya affischer görs alltså av ägaren och agenten tillsammans, inte av besökare i webbläsaren.
 - **Lagar och regler:** ingen lagring i webbläsaren behövs (sidan minns inte vilken affisch besökaren såg senast), så läget är oförändrat.
 
 ### F-003 Bläddra mellan affischerna

@@ -14,7 +14,6 @@
 
 ## Nästa steg
 - Vänta på ägarens klartecken för körningen nedan (F-002, F-003, F-004). Ingen kod är ändrad än.
-- Ägaren behöver bekräfta tolkningen i F-002: nya affischer görs av agenten på ägarens begäran, inte av besökare.
 - Affischen behöver uppdateras när regeringsläget ändras.
 
 ## Engångsåtgärder
@@ -24,6 +23,7 @@
 ## Beslut
 - **2026-11-14:** Cloudflare Workers i stället för GitHub Pages, så att repot kan vara privat och bara `public/` publiceras (ägarens val).
 - **2026-11-14:** Typsnitten ligger lokalt i stället för att hämtas från Google Fonts, så att inga besökaruppgifter skickas till tredje part.
+- **2026-11-14:** Nya affischer byggs av ägaren och agenten tillsammans. Besökare ska inte kunna skapa egna affischer på sidan (F-002).
 - **2026-11-14:** Bara vyn "Karikatyraffischen" publiceras. Artefaktens andra vyer ("Regeringscirkusen 2026" och "Manegen – interaktiv") är inte med.
 
 ## Föreslagna körningar

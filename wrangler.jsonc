@@ -1,0 +1,9 @@
+// Cloudflare Workers (static assets only). Only the public/ folder is published.
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "cirkusen",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./public"
+  }
+}

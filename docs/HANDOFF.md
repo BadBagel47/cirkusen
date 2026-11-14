@@ -36,8 +36,8 @@
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-14 | Claude | D-006 steg 7: M spegelvänd och figurerna jämnare placerade i utkastet. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 6: alla figurer genererade och inlagda i utkastet, med skyltar och skuggor som kod. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 5: test med genererad figur (S) inlagd i ett eget utkast. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 4: alla figurer ritade från grunden (kroppar, armar, ben, handskar, skor) i utkastet. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 3: hela scenen (tält, publik, manege, skylt) omritad i den nya stilen i utkastet. Inte publicerat. |
-| 2026-11-14 | Claude | D-006 steg 2: alla ansikten omritade för hand i utkastet, större huvuden, handskar och skor. Inte publicerat. |

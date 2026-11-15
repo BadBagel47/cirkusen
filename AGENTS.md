@@ -14,9 +14,10 @@ public/index.html       Genererad kopia av den senaste affischen (redigeras inte
 public/assets/poster.css, poster.js   Gemensam stil och kod: skalning, pratbubblor, bläddring, snabbval
 public/assets/posters.json   Lista över alla affischer, äldst först
 public/assets/fonts/    Bungee, Rye och Inter, lokalt med OFL-licenser
-public/assets/og-image.jpg   Delningsbild 1200×630 (första affischen)
+public/assets/og-image.jpg   Delningsbild 1200×630 för första affischen. Senare affischer har egen: public/<datum>/og-image.jpg
 public/favicon.*, apple-touch-icon.png   Ikoner
-tools/posters.py        Skapar nya affischer och kontrollerar arkivet, publiceras inte
+tools/posters.py        Skapar nya affischer, ritar delningsbilder och kontrollerar arkivet, publiceras inte
+tools/og-image.cjs      Ritar delningsbilden (1200×630) ur en affisch med Playwright, startas av posters.py, publiceras inte
 tools/restyle.py        Utkastverktyg: ritar om en affisch i tecknad stil med skuggning (D-006), publiceras inte
 tools/compose_v3.py     Utkastverktyg: lägger genererade figurbilder, skyltar och skuggor på affischen (D-006), publiceras inte
 drafts/                 Utkast som inte är publicerade. Ligger utanför public/ och syns inte på sajten

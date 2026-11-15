@@ -20,14 +20,14 @@
 - **Känt i utkastet:** smårörelserna inuti figurerna finns inte kvar (hela figurer gungar och studsar fortfarande). Bilderna är cirka 2 gånger visningsstorleken, utom S som är cirka 1,5. Det kodritade utkastet ligger kvar i `drafts/2026-11-14-v2/` och används som bakgrund.
 - **Kvar:** Ägaren bedömer utkastet. Sedan bestäms om det ska ersätta affischen från 14 november eller gälla från nästa affisch, och vid publicering flyttas bilderna till `public/<datum>/img/`.
 
-### F-005 Delningsbild som görs automatiskt för varje affisch
-- **Prio:** Medel · **Status:** Pågår 2026-11-15 (Claude, session för affischarkivet)
-- **Förslag:** Ett skript i `tools/` som ritar en delningsbild (1200×630) från affischen, så att varje ny affisch får rätt bild utan handarbete. Idag byts bilden för hand (se `docs/AFFISCHER.md`, punkt 4).
-
 ## Parkerat
 _(inget)_
 
 ## Klart
+
+### F-005 Delningsbild som görs automatiskt för varje affisch ✅ 2026-11-15
+- **Prio:** Medel
+- **Gjort:** `tools/posters.py image` ritar delningsbilden (1200×630) ur affischen med en riktig webbläsare och sparar den i affischens mapp. `new` gör det automatiskt och `check` varnar om en bild saknas. Provat lokalt: den renderade bilden av första affischen är i praktiken identisk med den ursprungliga. Den första affischen behåller sin ursprungliga bild.
 
 ### F-002 Affischarkiv: flera affischer på sidan ✅ 2026-11-14
 - **Prio:** Hög

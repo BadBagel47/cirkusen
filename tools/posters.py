@@ -5,6 +5,7 @@ Every poster lives in public/<slug>/index.html and is listed in public/assets/po
 (oldest first). The newest poster is also published at "/" as a generated copy.
 
   tools/posters.py new <slug> "<title>"   start a new poster as a copy of the newest one
+  tools/posters.py image [<slug>]         render the share image of a poster (default: the newest)
   tools/posters.py sync                   regenerate public/index.html from the newest poster
   tools/posters.py check                  verify the archive (also used before publishing)
 
@@ -12,8 +13,9 @@ Use --public <dir> to work on another copy of the public folder (for testing).
 """
 import argparse
 import json
+import os
 import re
-import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -71,6 +73,11 @@ def problems(public):
             out.append(f"{p['slug']}: body data-poster does not match")
         if f'href="{SITE}{p["slug"]}/"' not in html:
             out.append(f"{p['slug']}: canonical address does not match")
+        image = OG_IMAGE.search(html)
+        if not image or not image.group(1).startswith(SITE):
+            out.append(f"{p['slug']}: og:image missing or not on this site")
+        elif not (public / image.group(1)[len(SITE):]).exists():
+            out.append(f"{p['slug']}: share image file is missing ({image.group(1)})")
     listed = set(slugs)
     for d in public.iterdir():
         if d.is_dir() and SLUG.match(d.name) and d.name not in listed:
@@ -81,6 +88,39 @@ def problems(public):
     elif not root.exists() or root.read_text(encoding="utf-8") != root_html(public, posters):
         out.append("public/index.html is not a copy of the newest poster (run: tools/posters.py sync)")
     return out
+
+
+OG_IMAGE = re.compile(r'<meta property="og:image" content="([^"]*)">')
+
+
+def render_image(public, slug):
+    """Render public/<slug>/og-image.jpg with Playwright and point the page's og:image at it."""
+    env = dict(os.environ)
+    if "NODE_PATH" not in env:
+        found = subprocess.run(["npm", "root", "-g"], capture_output=True, text=True)
+        if found.returncode == 0:
+            env["NODE_PATH"] = found.stdout.strip()
+    out = public / slug / "og-image.jpg"
+    script = Path(__file__).resolve().parent / "og-image.cjs"
+    result = subprocess.run(["node", str(script), str(public), slug, str(out)], env=env)
+    if result.returncode != 0:
+        sys.exit(f"error: could not render the share image for {slug} (needs Node and Playwright)")
+    page = public / slug / "index.html"
+    html = page.read_text(encoding="utf-8")
+    if not OG_IMAGE.search(html):
+        sys.exit("error: could not find the og:image tag")
+    html = OG_IMAGE.sub(f'<meta property="og:image" content="{SITE}{slug}/og-image.jpg">', html, count=1)
+    page.write_text(html, encoding="utf-8")
+
+
+def cmd_image(public, slug):
+    posters = load(public)
+    slug = slug or posters[-1]["slug"]
+    if slug not in {p["slug"] for p in posters}:
+        sys.exit(f"error: {slug} is not listed in posters.json")
+    render_image(public, slug)
+    print(f"rendered public/{slug}/og-image.jpg")
+    cmd_sync(public)
 
 
 def cmd_check(public):
@@ -109,7 +149,10 @@ def cmd_new(public, slug, title):
     posters.append({"slug": slug, "date": slug[:10], "title": title})
     save(public, posters)
     cmd_sync(public)
-    print(f"created public/{slug}/index.html as a copy of {old}. Edit it, then run: tools/posters.py check")
+    print(f"created public/{slug}/index.html as a copy of {old}.")
+    render_image(public, slug)
+    cmd_sync(public)
+    print(f"Edit the poster, then run: tools/posters.py image {slug}  and  tools/posters.py check")
 
 
 def main():
@@ -117,6 +160,7 @@ def main():
     ap.add_argument("--public", type=Path, default=Path(__file__).resolve().parent.parent / "public")
     sub = ap.add_subparsers(dest="cmd", required=True)
     sub.add_parser("sync")
+    sub.add_parser("image").add_argument("slug", nargs="?")
     sub.add_parser("check")
     n = sub.add_parser("new")
     n.add_argument("slug")
@@ -124,6 +168,8 @@ def main():
     a = ap.parse_args()
     if a.cmd == "sync":
         cmd_sync(a.public)
+    elif a.cmd == "image":
+        cmd_image(a.public, a.slug)
     elif a.cmd == "check":
         cmd_check(a.public)
     else:

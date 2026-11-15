@@ -1,7 +1,7 @@
 # Handoff
 
 ## Agentregler och inventering
-- **Agentregler:** v1.7 (2026-11-14). Repot är skapat enligt reglerna från början.
+- **Agentregler:** v1.9 (2026-11-15). Repot är skapat enligt reglerna från början.
 - **Inventory: 2026-11-14** – Nytt, tomt repo. Bara `main`, inga PR, inga Issues, ingen tidigare dokumentation.
 - **Projektspråk:** svenska (affischens text).
 - **Publicering:** Cloudflare Workers, Worker `cirkusen`, static assets från `public/` enligt `wrangler.jsonc`. Adress: https://cirkusen.trythis.one/
@@ -11,7 +11,7 @@
 ## Läget nu
 - Sidan är publicerad på https://cirkusen.trythis.one/. Ägaren verifierade den 2026-11-14. Agenten har testat lokalt i dator- och mobilbredd utan konsolfel.
 - Affischen visar läget **14 november 2026**. Den är "färskvara" och blir inaktuell när regeringsfrågan avgörs.
-- Sidan är nu ett **affischarkiv** (F-002, F-003, F-004): varje affisch har en egen adress med datum, `/` visar den senaste, och det finns Äldre/Nyare-knappar, piltangenter och en snabbvalslista. Så görs en ny affisch: se [docs/AFFISCHER.md](AFFISCHER.md). Tills det finns två affischer är bläddringsknapparna avstängda och listan har bara en rad.
+- Sidan är nu ett **affischarkiv** (F-002, F-003, F-004): varje affisch har en egen adress med datum, `/` visar den senaste, och det finns Äldre/Nyare-knappar, piltangenter och en snabbvalslista. Så görs en ny affisch: se [docs/AFFISCHER.md](AFFISCHER.md). Varje affisch får en egen delningsbild som ritas av `tools/posters.py image` (F-005). Tills det finns två affischer är bläddringsknapparna avstängda och listan har bara en rad.
 - Kodändringen är provad lokalt (dator- och mobilbredd, tangentbord, minskad rörelse, inga konsolfel). **Inte verifierad på den publicerade adressen** eftersom agenten stoppas av Cloudflares skydd, och inte provad på ägarens telefon.
 
 ## Nästa steg
@@ -30,14 +30,13 @@
 - **2026-11-14:** Bara vyn "Karikatyraffischen" publiceras. Artefaktens andra vyer ("Regeringscirkusen 2026" och "Manegen – interaktiv") är inte med.
 
 ## Föreslagna körningar
-**A** – standardmodell, medel nivå – Delningsbild för varje affisch
-- F-005 – Ett skript som ritar delningsbilden från affischen. Ger rätt bild när en ny affisch delas, utan handarbete.
+_Inga just nu._
 
 ## Senaste ändringar
 | Datum | Agent | Vad |
 |---|---|---|
+| 2026-11-15 | Claude | Delningsbild som ritas automatiskt för varje affisch (F-005), provad lokalt. Agentreglerna v1.9, inget i repot behövde ändras. |
 | 2026-11-14 | Claude | D-006 steg 7: M spegelvänd och figurerna jämnare placerade i utkastet. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 6: alla figurer genererade och inlagda i utkastet, med skyltar och skuggor som kod. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 5: test med genererad figur (S) inlagd i ett eget utkast. Inte publicerat. |
 | 2026-11-14 | Claude | D-006 steg 4: alla figurer ritade från grunden (kroppar, armar, ben, handskar, skor) i utkastet. Inte publicerat. |
-| 2026-11-14 | Claude | D-006 steg 3: hela scenen (tält, publik, manege, skylt) omritad i den nya stilen i utkastet. Inte publicerat. |

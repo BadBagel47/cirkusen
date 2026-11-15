@@ -21,7 +21,7 @@
 - **Kvar:** Ägaren bedömer utkastet. Sedan bestäms om det ska ersätta affischen från 14 november eller gälla från nästa affisch, och vid publicering flyttas bilderna till `public/<datum>/img/`.
 
 ### F-005 Delningsbild som görs automatiskt för varje affisch
-- **Prio:** Medel
+- **Prio:** Medel · **Status:** Pågår 2026-11-15 (Claude, session för affischarkivet)
 - **Förslag:** Ett skript i `tools/` som ritar en delningsbild (1200×630) från affischen, så att varje ny affisch får rätt bild utan handarbete. Idag byts bilden för hand (se `docs/AFFISCHER.md`, punkt 4).
 
 ## Parkerat

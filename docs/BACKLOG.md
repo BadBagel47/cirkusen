@@ -5,6 +5,11 @@
 
 ## Öppna
 
+### F-006 Dagens affisch: måndag 16 november 2026 (dag 64 efter valet)
+- **Prio:** Hög · **Status:** Pågår 2026-11-16 (Claude)
+- **Önskemål (ägaren 2026-11-16):** "Gör dagens poster."
+- **Plan:** Ny affisch som kopia av den från 14 november (`tools/posters.py new 2026-11-16`), uppdaterad med läget: C valde S:s totalpaket (söndag 15 november), V ligger fast, Kristersson rapporterar till talmannen tisdag 17 november. Egen delningsbild.
+
 ### D-006 Mer utvecklad stil på figurerna (utkast)
 - **Prio:** Medel · **Status:** Utkast, väntar på ägarens synpunkter
 - **Önskemål (ägaren, 2026-11-14):** En ny version med mer utvecklad stil, i riktning mot klassisk tecknad film: mjuk skuggning, svarta konturer, vita handskar och blanka skor. Inga skyddade figurer får användas. Ingenting ska publiceras än.

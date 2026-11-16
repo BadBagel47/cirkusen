@@ -5,11 +5,6 @@
 
 ## Öppna
 
-### F-006 Dagens affisch: måndag 16 november 2026 (dag 64 efter valet)
-- **Prio:** Hög · **Status:** Pågår 2026-11-16 (Claude)
-- **Önskemål (ägaren 2026-11-16):** "Gör dagens poster."
-- **Plan:** Ny affisch som kopia av den från 14 november (`tools/posters.py new 2026-11-16`), uppdaterad med läget: C valde S:s totalpaket (söndag 15 november), V ligger fast, Kristersson rapporterar till talmannen tisdag 17 november. Egen delningsbild.
-
 ### D-006 Mer utvecklad stil på figurerna (utkast)
 - **Prio:** Medel · **Status:** Utkast, väntar på ägarens synpunkter
 - **Önskemål (ägaren, 2026-11-14):** En ny version med mer utvecklad stil, i riktning mot klassisk tecknad film: mjuk skuggning, svarta konturer, vita handskar och blanka skor. Inga skyddade figurer får användas. Ingenting ska publiceras än.
@@ -29,6 +24,11 @@
 _(inget)_
 
 ## Klart
+
+### F-006 Dagens affisch: måndag 16 november 2026 (dag 64 efter valet) ✅ 2026-11-16
+- **Prio:** Hög
+- **Gjort:** Ny affisch på `/2026-11-16/` (startsidan visar den nu), gjord som kopia av den från 14 november med uppdaterat läge: C valde S:s totalpaket söndag 15 november (C:s två paket är märkta "valt paket" och "valt bort"), V ligger fast, Kristersson rapporterar till talmannen tisdag 17 november och talmannen pratar sedan med alla partiledare. Stämpel, sidfot, texter och egen delningsbild uppdaterade. Affischen från 14 november är orörd. Provad lokalt i dator- och mobilbredd, med minskad rörelse och utan konsolfel.
+- **Underlag och begränsning:** Agenten kunde inte öppna SVT:s, Sveriges Radios och TV4:s sidor (se HANDOFF), utan bygger på webbsökning som pekade på TV4, Sveriges Radio, SVT och riksdagen. Kärnan (C:s besked, Kristerssons rapport 17 november, V:s hållning) fanns i flera källor. Uppgiften att M och KD är kritiska mot C:s val är med bara som "vi spelar vidare" och "dörren står öppen", eftersom det inte gick att läsa vem som sa vad. Ägaren bör kolla detaljerna mot källorna.
 
 ### F-005 Delningsbild som görs automatiskt för varje affisch ✅ 2026-11-15
 - **Prio:** Medel

@@ -1,7 +1,7 @@
 # Handoff
 
 ## Agentregler och inventering
-- **Agentregler:** v1.9 (2026-11-15). Repot är skapat enligt reglerna från början.
+- **Agentregler:** v1.12 (2026-11-18). Repot är skapat enligt reglerna från början. Ändringarna sedan v1.9 gäller svarsformat och körförslag, inget i repot behövde ändras.
 - **Inventory: 2026-11-14** – Nytt, tomt repo. Bara `main`, inga PR, inga Issues, ingen tidigare dokumentation.
 - **Projektspråk:** svenska (affischens text).
 - **Publicering:** Cloudflare Workers, Worker `cirkusen`, static assets från `public/` enligt `wrangler.jsonc`. Adress: https://cirkusen.trythis.one/
@@ -16,7 +16,7 @@
 - Kodändringen är provad lokalt (dator- och mobilbredd, tangentbord, minskad rörelse, inga konsolfel). **Inte verifierad på den publicerade adressen** eftersom agenten stoppas av Cloudflares skydd, och inte provad på ägarens telefon.
 
 ## Nästa steg
-- **D-006 (ny stil, utkast):** ägaren bedömer utkastet med genererade figurer i `drafts/2026-11-14-v3/` (byggs med `tools/compose_v3.py`). Ingenting av det är publicerat.
+- **D-006 (ny stil, utkast):** ägaren godkände 2026-11-18 att utkastet publiceras som ny affisch. Men utkastet har innehållet från 14 november, och sedan dess finns affischen från 16 november. Väntar på ägarens besked om hur (se fråga 2026-11-18). Ingenting av den nya stilen är publicerat.
 - Ägaren kollar affischen från 16 november (fakta och publicering). Nästa affisch görs när läget ändras, t.ex. efter talmannens besked efter 17 november (se AFFISCHER.md).
 - Affischen behöver uppdateras när regeringsläget ändras.
 
